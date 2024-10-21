@@ -15,6 +15,7 @@
       </thead>
       <tbody>
         <mobile-phone
+          @display-modal="displayModal"
           @delete-phone="deletePhone"
           @my-brand="showBrandName"
           @my-event="changeAvalible"
@@ -25,11 +26,31 @@
       </tbody>
     </table>
   </div>
+  <custom-modal v-if="display">
+    <template #default v-if="specs">
+      <h1>Spec</h1>
+      <p>{{ currentPhone.specification }}</p>
+    </template>
+
+    <template #stores v-if="stores">
+      <h1>Stores</h1>
+      <p v-for="store in currentPhone.stores">{{ store }}</p>
+    </template>
+  </custom-modal>
 </template>
 
 <script>
+import CustomModal from "./CustomModal.vue";
 import MobilePhone from "./MobilePhone.vue";
 export default {
+  data() {
+    return {
+      display: false,
+      currentPhone: {},
+      specs: false,
+      stores: false,
+    };
+  },
   props: {
     phones: {
       type: Array,
@@ -40,7 +61,7 @@ export default {
       required: false,
     },
   },
-  components: { MobilePhone },
+  components: { MobilePhone, CustomModal },
   methods: {
     changeAvalible(id) {
       this.$emit("change-phone", id);
@@ -50,6 +71,14 @@ export default {
     },
     deletePhone(id) {
       this.$emit("delete-phone", id);
+    },
+
+    displayModal(phone, mode) {
+      this.display = !this.display;
+      this.currentPhone = phone;
+      this.stores = false;
+      this.specs = false;
+      this[mode] = true;
     },
   },
   emits: ["change-phone", "delete-phone"],

@@ -18,10 +18,16 @@
     </td>
 
     <td>
-      <i class="bi bi-info-circle"></i>
+      <i
+        @click="$emit('display-modal', phone, 'specs')"
+        class="bi bi-info-circle"
+      ></i>
     </td>
     <td>
-      <i class="bi bi-shop"></i>
+      <i
+        @click="$emit('display-modal', phone, 'stores')"
+        class="bi bi-shop"
+      ></i>
     </td>
   </tr>
 </template>
@@ -49,7 +55,7 @@ export default {
     console.log("phone deleted");
   },
 
-  emits: ["my-event", "delete-phone"],
+  emits: ["my-event", "delete-phone", "display-modal"],
   props: {
     phone: {
       type: Object,

@@ -7,13 +7,22 @@
           {{ sign }}
         </button>
       </h1>
+
+      <div class="col-12 search_div">
+        <input
+          type="text"
+          v-model="searchTerm"
+          placeholder="search"
+          class="form-control"
+        />
+      </div>
       <add-phone v-if="displayForm" @new-phone="savePhone"></add-phone>
       <phones-table
         :displayForm="displayForm"
         @delete-phone="deletePhone"
         @show-brand="finalName"
         @change-phone="finalChange"
-        :phones="phones"
+        :phones="filteredPhones"
       ></phones-table>
     </div>
   </div>
@@ -28,6 +37,7 @@ export default {
       sign: "+",
       displayForm: false,
       phones: [],
+      searchTerm: "",
     };
   },
   methods: {
@@ -52,6 +62,19 @@ export default {
     },
   },
 
+  computed: {
+    filteredPhones() {
+      if (this.searchTerm.length === 0) {
+        return this.phones;
+      } else {
+        let filter = this.phones.filter((phone) =>
+          phone.name.includes(this.searchTerm)
+        );
+        return filter;
+      }
+    },
+  },
+
   mounted() {
     fetch(
       "https://raw.githubusercontent.com/Danilovesovic/pitanja/main/phones.json"
@@ -66,4 +89,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.search_div {
+  margin-bottom: 20px;
+}
+</style>

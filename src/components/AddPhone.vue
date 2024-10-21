@@ -63,9 +63,4 @@ export default {
 };
 </script>
 
-<style>
-.nekimargin {
-  margin-top: 100px;
-  margin-bottom: 40px;
-}
-</style>
+<style></style>
